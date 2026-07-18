@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/webhook.js": {
-      "includeFiles": "api/assets/**"
-    }
-  }
-}
