@@ -2,6 +2,9 @@
   "functions": {
     "api/webhook.js": {
       "includeFiles": "api/assets/**"
+    },
+    "api/download-pdf.js": {
+      "includeFiles": "api/assets/**"
     }
   }
 }
