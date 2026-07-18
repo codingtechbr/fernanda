@@ -58,8 +58,9 @@ export default async function handler(req, res) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const pdfPath = path.join(process.cwd(), 'api', 'assets', 'EBOOK_NANDA.pdf');
     const pdfBuffer = fs.readFileSync(pdfPath);
+    console.log('PDF lido, tamanho em bytes:', pdfBuffer.length);
 
-    await resend.emails.send({
+    const { data: emailData, error: emailError } = await resend.emails.send({
       from: process.env.RESEND_FROM,
       to: email,
       subject: 'Seu Ebook — Time de Resultados 📖',
@@ -75,10 +76,16 @@ export default async function handler(req, res) {
       attachments: [
         {
           filename: 'Time-de-Resultados.pdf',
-          content: pdfBuffer,
+          content: pdfBuffer.toString('base64'),
         },
       ],
     });
+
+    if (emailError) {
+      console.error('Erro ao enviar via Resend:', emailError);
+    } else {
+      console.log('E-mail enviado com sucesso, id:', emailData?.id);
+    }
 
     return res.status(200).send('ok');
   } catch (err) {
